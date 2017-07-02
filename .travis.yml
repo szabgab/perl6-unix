@@ -5,10 +5,10 @@ language: perl6
 sudo: false
 perl6:
   - latest
-install:
-  - rakudobrew build-zef
-  - zef install Test::META
-  - zef install Path::Iterator
-  - zef --depsonly install .
+#install:
+#  - rakudobrew build-zef
+#  - zef install Test::META
+#  - zef install Path::Iterator
+#  - zef --depsonly install .
 env:
   - AUTHOR_TESTING=1
