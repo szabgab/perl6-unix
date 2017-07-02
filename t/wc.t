@@ -1,12 +1,20 @@
 use v6;
 use Test;
 
-plan 1;
 
-my $proc = run "perl6", "bin/wc.pl6", "t/files/empty.txt", :out;
-my $output = $proc.out.slurp: :close;
-is $output, "       0      0      0 t/files/empty.txt\n";
+my @cases = (
+    't/files/empty.txt'             => "       0      0      0 t/files/empty.txt\n",
+    't/files/line_no_newline.txt'   => "       0      1      4 t/files/line_no_newline.txt\n",
+    't/files/line_with_newline.txt' => "       1      1      5 t/files/line_with_newline.txt\n",
+    't/files/line_and_half.txt'     => "       1      2      8 t/files/line_and_half.txt\n",
+    't/files/a.txt'                 => "       2      10      49 t/files/a.txt\n",
+);
 
-#my $out = qx{perl6 bin/wc.pl6 t/files/a.txt}
-#is $out, "       2      10      49 t/files/a.txt\n";
-#diag $out;
+plan @cases.elems;
+
+for @cases -> $c {
+    my $proc = run $*EXECUTABLE, 'bin/wc.pl6', $c.key, :out;
+    my $output = $proc.out.slurp: :close;
+    is $output, $c.value;
+}
+

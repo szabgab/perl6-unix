@@ -18,11 +18,13 @@ sub MAIN(Bool :$c, Bool :$l, Bool :$m, Bool :$w, *@files) {
         my $words = 0;
         my $chars = 0;
         my $bytes = 0;
-        my $fh = $file.IO.open;
+        my $fh = $file.IO.open(:chomp(False));
         while my $line = $fh.get {
-            $lines++;
+            $lines++ if $line ~~ /\n$/;
             $chars += $line.chars;
             $bytes += $line.encode('utf8').bytes;
+
+            $line .= chomp;
             $words += $line.split(/\s+/).elems;
         }
         say "       $lines      $words      $chars $file";
